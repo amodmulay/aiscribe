@@ -142,11 +142,16 @@ const ContentGeneratorForm: React.FC<ContentGeneratorFormProps> = ({ articleSumm
 
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
-              <Loader2 key="loader" className="mr-2 h-4 w-4 animate-spin" />
+              <>
+                <Loader2 key="loader" className="mr-2 h-4 w-4 animate-spin" />
+                Generating...
+              </>
             ) : (
-              <Send key="send" className="mr-2 h-4 w-4" />
+              <>
+                <Send key="send" className="mr-2 h-4 w-4" />
+                Generate Content
+              </>
             )}
-            Generate Content
           </Button>
         </form>
       </CardContent>

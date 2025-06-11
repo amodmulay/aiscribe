@@ -145,11 +145,16 @@ const SummarizerForm: React.FC<SummarizerFormProps> = ({ onSummaryGenerated, isL
 
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
-              <Loader2 key="loader" className="mr-2 h-4 w-4 animate-spin" />
+              <>
+                <Loader2 key="loader" className="mr-2 h-4 w-4 animate-spin" />
+                Summarizing...
+              </>
             ) : (
-              <Sparkles key="sparkles" className="mr-2 h-4 w-4" />
+              <>
+                <Sparkles key="sparkles" className="mr-2 h-4 w-4" />
+                Summarize
+              </>
             )}
-            Summarize
           </Button>
         </form>
       </CardContent>
