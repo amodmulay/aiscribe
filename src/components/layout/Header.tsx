@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import AuthButton from '@/components/auth/AuthButton';
 import Logo from '@/components/Logo';
 import { Button } from '@/components/ui/button';
-import { History, Home } from 'lucide-react';
+import { Home } from 'lucide-react';
 
 const Header = () => {
   return (
@@ -16,15 +15,10 @@ const Header = () => {
               Home
             </Link>
           </Button>
-          <Button variant="ghost" asChild>
-            <Link href="/history" className="flex items-center text-sm font-medium text-foreground/80 hover:text-foreground">
-              <History className="mr-2 h-4 w-4" />
-              History
-            </Link>
-          </Button>
+          {/* History link removed as Firebase history is disabled */}
         </nav>
         <div className="ml-auto">
-          <AuthButton />
+          {/* AuthButton removed */}
         </div>
       </div>
     </header>

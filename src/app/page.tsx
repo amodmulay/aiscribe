@@ -1,3 +1,4 @@
+
 "use client"; // Make this a client component to manage state
 
 import { useState, useCallback } from 'react';
@@ -5,17 +6,17 @@ import SummarizerForm from '@/components/article-summarizer/SummarizerForm';
 import SummaryDisplay from '@/components/article-summarizer/SummaryDisplay';
 import ContentGeneratorForm from '@/components/content-generator/ContentGeneratorForm';
 import GeneratedContentDisplay from '@/components/content-generator/GeneratedContentDisplay';
-import { useAuth } from '@/contexts/AuthContext';
-import { addHistoryEntryAction } from '@/lib/actions/historyActions';
-import type { HistoryEntry, AiModel, SocialPlatform } from '@/types';
+// import { useAuth } from '@/contexts/AuthContext'; // Firebase Auth removed
+// import { addHistoryEntryAction } from '@/lib/actions/historyActions'; // Firebase History removed
+import type { HistoryEntry, AiModel, SocialPlatform } from '@/types'; // HistoryEntry might be less relevant now
 import { Separator } from '@/components/ui/separator';
 
 export default function HomePage() {
-  const { user } = useAuth();
+  // const { user } = useAuth(); // Firebase Auth removed
   const [summary, setSummary] = useState('');
   const [modelUsed, setModelUsed] = useState<AiModel | ''>('');
-  const [articleIdentifier, setArticleIdentifier] = useState(''); // URL or first few words of text
-  const [articleInputType, setArticleInputType] = useState<'url' | 'text' | null>(null);
+  // const [articleIdentifier, setArticleIdentifier] = useState(''); // Less relevant without history
+  // const [articleInputType, setArticleInputType] = useState<'url' | 'text' | null>(null); // Less relevant without history
 
 
   const [generatedContent, setGeneratedContent] = useState('');
@@ -34,24 +35,25 @@ export default function HomePage() {
     ) => {
       setSummary(newSummary);
       setModelUsed(newModelUsed);
-      setArticleInputType(inputType);
-      setArticleIdentifier(inputType === 'url' ? originalContent : originalContent.substring(0,100)); // Store URL or snippet
+      // setArticleInputType(inputType); // Less relevant without history
+      // setArticleIdentifier(inputType === 'url' ? originalContent : originalContent.substring(0,100)); // Less relevant without history
       setGeneratedContent(''); // Clear previous generated content
 
-      if (user) {
-        const historyData: Omit<HistoryEntry, 'id' | 'userId' | 'createdAt'> = {
-          summary: newSummary,
-          modelUsed: newModelUsed,
-        };
-        if (inputType === 'url') {
-          historyData.articleUrl = originalContent;
-        } else {
-          historyData.articleText = originalContent;
-        }
-        await addHistoryEntryAction(user.uid, historyData);
-      }
+      // Firebase history saving removed
+      // if (user) {
+      //   const historyData: Omit<HistoryEntry, 'id' | 'userId' | 'createdAt'> = {
+      //     summary: newSummary,
+      //     modelUsed: newModelUsed,
+      //   };
+      //   if (inputType === 'url') {
+      //     historyData.articleUrl = originalContent;
+      //   } else {
+      //     historyData.articleText = originalContent;
+      //   }
+      //   await addHistoryEntryAction(user.uid, historyData);
+      // }
     },
-    [user]
+    [] // user removed from dependencies
   );
 
   const handleContentGenerated = useCallback(
@@ -59,8 +61,6 @@ export default function HomePage() {
       setGeneratedContent(post);
       setGeneratedContentPlatform(platform);
       setGeneratedContentTone(tone);
-      
-      // Optionally, update history item with generated content if needed (more complex)
     },
     []
   );
@@ -73,7 +73,6 @@ export default function HomePage() {
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Effortlessly summarize articles and generate engaging content using the power of AI.
-          Log in to save your work history.
         </p>
       </div>
       
