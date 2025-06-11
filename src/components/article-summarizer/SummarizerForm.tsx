@@ -71,6 +71,23 @@ const SummarizerForm: React.FC<SummarizerFormProps> = ({ onSummaryGenerated, isL
     }
   };
 
+  let buttonContent;
+  if (isLoading) {
+    buttonContent = (
+      <>
+        <Loader2 key="loader" className="mr-2 h-4 w-4 animate-spin" />
+        Summarizing...
+      </>
+    );
+  } else {
+    buttonContent = (
+      <>
+        <Sparkles key="sparkles" className="mr-2 h-4 w-4" />
+        Summarize
+      </>
+    );
+  }
+
   return (
     <Card className="w-full shadow-lg">
       <CardHeader>
@@ -88,6 +105,7 @@ const SummarizerForm: React.FC<SummarizerFormProps> = ({ onSummaryGenerated, isL
                 form.setValue('inputType', value);
                 form.setValue('articleContent', ''); // Clear content on type change
               }}
+              disabled={isLoading}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select input type" />
@@ -144,17 +162,7 @@ const SummarizerForm: React.FC<SummarizerFormProps> = ({ onSummaryGenerated, isL
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Loader2 key="loader" className="mr-2 h-4 w-4 animate-spin" />
-                Summarizing...
-              </>
-            ) : (
-              <>
-                <Sparkles key="sparkles" className="mr-2 h-4 w-4" />
-                Summarize
-              </>
-            )}
+            {buttonContent}
           </Button>
         </form>
       </CardContent>

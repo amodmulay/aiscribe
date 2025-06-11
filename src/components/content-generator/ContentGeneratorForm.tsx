@@ -44,18 +44,9 @@ const ContentGeneratorForm: React.FC<ContentGeneratorFormProps> = ({ articleSumm
       platform: SocialPlatformOptions[0],
       tone: '',
     },
-    // Update default summary when articleSummary prop changes
     values: { summary: articleSummary, platform: SocialPlatformOptions[0], tone: ''} 
   });
   
-  // Effect to update form's summary field when prop changes
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  // biome-ignore lint/complexity/noUselessFragments: <explanation>
-  // React.useEffect(() => {
-  //   form.setValue('summary', articleSummary);
-  // }, [articleSummary, form.setValue]);
-
-
   const onSubmit: SubmitHandler<ContentGeneratorFormData> = async (data) => {
     setIsLoading(true);
     try {
@@ -83,7 +74,24 @@ const ContentGeneratorForm: React.FC<ContentGeneratorFormProps> = ({ articleSumm
   };
 
   if (!articleSummary) {
-    return null; // Don't render if there's no summary yet
+    return null; 
+  }
+
+  let buttonContent;
+  if (isLoading) {
+    buttonContent = (
+      <>
+        <Loader2 key="loader" className="mr-2 h-4 w-4 animate-spin" />
+        Generating...
+      </>
+    );
+  } else {
+    buttonContent = (
+      <>
+        <Send key="send" className="mr-2 h-4 w-4" />
+        Generate Content
+      </>
+    );
   }
 
   return (
@@ -141,17 +149,7 @@ const ContentGeneratorForm: React.FC<ContentGeneratorFormProps> = ({ articleSumm
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Loader2 key="loader" className="mr-2 h-4 w-4 animate-spin" />
-                Generating...
-              </>
-            ) : (
-              <>
-                <Send key="send" className="mr-2 h-4 w-4" />
-                Generate Content
-              </>
-            )}
+            {buttonContent}
           </Button>
         </form>
       </CardContent>
