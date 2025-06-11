@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { summarizeArticle, type SummarizeArticleInput } from '@/ai/flows/summarize-article';
 import type { AiModel } from '@/types';
 import { AiModelOptions } from '@/types';
@@ -63,9 +64,22 @@ const SummarizerForm: React.FC<SummarizerFormProps> = ({ onSummaryGenerated, isL
       console.error("Error summarizing article:", error);
       toast({
         title: "Error",
-        description: "Failed to summarize the article. Please try again.",
+        description: `Failed to summarize the article: ${error instanceof Error ? error.message : 'An unknown error occurred'}. Please try again.`,
         variant: "destructive",
-      });
+        action: (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="outline">View Details</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Error Details</AlertDialogTitle>
+                <AlertDialogDescription>{error instanceof Error ? error.stack : String(error)}</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter><AlertDialogAction>Close</AlertDialogAction></AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>)
+        });
     } finally {
       setIsLoading(false);
     }
