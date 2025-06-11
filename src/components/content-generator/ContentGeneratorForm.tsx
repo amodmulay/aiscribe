@@ -77,23 +77,6 @@ const ContentGeneratorForm: React.FC<ContentGeneratorFormProps> = ({ articleSumm
     return null; 
   }
 
-  let buttonContent;
-  if (isLoading) {
-    buttonContent = (
-      <>
-        <Loader2 key="loader" className="mr-2 h-4 w-4 animate-spin" />
-        Generating...
-      </>
-    );
-  } else {
-    buttonContent = (
-      <>
-        <Send key="send" className="mr-2 h-4 w-4" />
-        Generate Content
-      </>
-    );
-  }
-
   return (
     <Card className="w-full shadow-lg mt-8">
       <CardHeader>
@@ -149,7 +132,12 @@ const ContentGeneratorForm: React.FC<ContentGeneratorFormProps> = ({ articleSumm
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {buttonContent}
+            {isLoading ? (
+              <Loader2 key="loader-generating" className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send key="send-generate" className="h-4 w-4" />
+            )}
+            <span>{isLoading ? "Generating..." : "Generate Content"}</span>
           </Button>
         </form>
       </CardContent>

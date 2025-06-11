@@ -71,23 +71,6 @@ const SummarizerForm: React.FC<SummarizerFormProps> = ({ onSummaryGenerated, isL
     }
   };
 
-  let buttonContent;
-  if (isLoading) {
-    buttonContent = (
-      <>
-        <Loader2 key="loader" className="mr-2 h-4 w-4 animate-spin" />
-        Summarizing...
-      </>
-    );
-  } else {
-    buttonContent = (
-      <>
-        <Sparkles key="sparkles" className="mr-2 h-4 w-4" />
-        Summarize
-      </>
-    );
-  }
-
   return (
     <Card className="w-full shadow-lg">
       <CardHeader>
@@ -162,7 +145,12 @@ const SummarizerForm: React.FC<SummarizerFormProps> = ({ onSummaryGenerated, isL
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {buttonContent}
+            {isLoading ? (
+              <Loader2 key="loader-summarizing" className="h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles key="sparkles-summarize" className="h-4 w-4" />
+            )}
+            <span>{isLoading ? "Summarizing..." : "Summarize"}</span>
           </Button>
         </form>
       </CardContent>
