@@ -1,0 +1,42 @@
+// Summarizes articles from URLs or text input using an AI model.
+
+'use server';
+
+import {ai} from '@/ai/genkit';
+import {z} from 'genkit';
+
+const SummarizeArticleInputSchema = z.object({
+  articleContent: z
+    .string()
+    .describe('The content of the article to be summarized, either URL or text.'),
+  model: z.string().optional().describe('The AI model to use for summarization.'),
+});
+export type SummarizeArticleInput = z.infer<typeof SummarizeArticleInputSchema>;
+
+const SummarizeArticleOutputSchema = z.object({
+  summary: z.string().describe('The concise summary of the article.'),
+});
+export type SummarizeArticleOutput = z.infer<typeof SummarizeArticleOutputSchema>;
+
+export async function summarizeArticle(input: SummarizeArticleInput): Promise<SummarizeArticleOutput> {
+  return summarizeArticleFlow(input);
+}
+
+const summarizeArticlePrompt = ai.definePrompt({
+  name: 'summarizeArticlePrompt',
+  input: {schema: SummarizeArticleInputSchema},
+  output: {schema: SummarizeArticleOutputSchema},
+  prompt: `Summarize the following article in a concise manner:\n\n{{{articleContent}}}`,
+});
+
+const summarizeArticleFlow = ai.defineFlow(
+  {
+    name: 'summarizeArticleFlow',
+    inputSchema: SummarizeArticleInputSchema,
+    outputSchema: SummarizeArticleOutputSchema,
+  },
+  async input => {
+    const {output} = await summarizeArticlePrompt(input);
+    return output!;
+  }
+);
