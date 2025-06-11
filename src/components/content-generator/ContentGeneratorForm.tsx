@@ -1,5 +1,7 @@
+
 "use client";
 
+import React from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -139,12 +141,14 @@ const ContentGeneratorForm: React.FC<ContentGeneratorFormProps> = ({ articleSumm
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="mr-2 h-4 w-4" />
-            )}
-            Generate Content
+            <React.Fragment>
+              {isLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="mr-2 h-4 w-4" />
+              )}
+              Generate Content
+            </React.Fragment>
           </Button>
         </form>
       </CardContent>

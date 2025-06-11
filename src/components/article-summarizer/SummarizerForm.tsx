@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -143,12 +144,14 @@ const SummarizerForm: React.FC<SummarizerFormProps> = ({ onSummaryGenerated, isL
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Sparkles className="mr-2 h-4 w-4" />
-            )}
-            Summarize
+            <React.Fragment>
+              {isLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Sparkles className="mr-2 h-4 w-4" />
+              )}
+              Summarize
+            </React.Fragment>
           </Button>
         </form>
       </CardContent>
